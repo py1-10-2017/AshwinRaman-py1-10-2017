@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Great Number Game</title>
+</head>
+<body>
+    <h1>Great Number Game</h1>
+    <h4>Guess a Number between 1-100</h4>
+    <form action="/guess" method="post">
+        <input type="number" name="guess">
+        <input type="submit" value="Guess">
+    </form>
+    {{ session['result'] }}
+    {% if session['result'] == 'low' %}
+    <h1>Too low!</h1>
+    {% elif session['result'] == 'high' %}
+    <h1>Too high!</h1>
+    {% elif session['result'] == 'correct' %}
+    <h1>You got it right!</h1>
+    <a href="/reset"><button>Play Again</button></a>
+    {% endif %}
+</body>
+</html>
