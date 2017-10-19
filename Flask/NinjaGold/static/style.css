@@ -1,0 +1,50 @@
+#top h1{
+  color: gold;
+  text-align: center;
+}
+
+.locations{
+  display: inline-block;
+
+}
+
+#farm{
+  display: inline-block;
+  border: 2px solid;
+  text-align: center;
+  margin: 70px;
+  padding: 20px;
+
+}
+
+#cave{
+  display: inline-block;
+  border: 2px solid;
+  text-align: center;
+  margin: 70px;
+  padding: 20px;
+}
+
+#house{
+  display: inline-block;
+  border: 2px solid;
+  text-align: center;
+  margin: 70px;
+  padding: 20px;
+}
+
+#casino{
+  display: inline-block;
+  border: 2px solid;
+  text-align: center;
+  margin: 70px;
+  padding: 20px;
+}
+#reset form{
+  margin-left: 575px;
+}
+
+}
+#reset input{
+  margin-left: 10px;
+}
