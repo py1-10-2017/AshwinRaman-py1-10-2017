@@ -1,0 +1,8 @@
+USE twitter;
+SELECT * FROM tweets;
+INSERT INTO tweets (id, tweet, user_id, created_at, updated_at) VALUES (12, 'Hello', 5, NOW(), NOW())
+SELECT * FROM tweets;
+DELETE FROM tweets WHERE id = 12;
+SELECT * FROM tweets;
+UPDATE tweets SET tweet = 'Hello there!' WHERE id = 11;
+SELECT * FROM tweets;
