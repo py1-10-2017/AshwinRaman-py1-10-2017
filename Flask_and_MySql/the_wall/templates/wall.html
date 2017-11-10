@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Success! Welcome to your Wall</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    </head>
+    <body>
+        <nav><h1>The Wall</h1><a href="logout">Logout</a></nav>
+        <hr>
+        <div class="wrapper">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flashed-messages">
+            {% for category, message in messages %}
+            <p class="{{category}}">{{message}}</p>
+            {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+            <form id="new-message" action="/post_message" method="POST">
+                <h3>Post a Message</h3>
+                <div class="form-group">
+                    <textarea name="message" cols="30" rows="10"></textarea>
+                </div>
+                <input type="submit" value="Post">
+            </form>
+            {% for message in messages %}
+                <div class="message">
+                    <h3>{{message.first_name}} {{message.last_name}} - {{message.created_at.strftime('%b %d %Y')}}</h3>
+                    <p>{{message.message}}</p>
+                    <form class="new-comment" action="/post_comment/{{message.id}}" method="post">
+                        <h5>Post a comment on {{message.first_name}}'s message</h5>
+                        <div class="form-group">
+                            <textarea name="comment" cols="30" rows="10"></textarea>
+                        </div>
+                        <input type="submit" value="Comment">
+                    </form>
+                    {% for comment in comments %}
+                    {% if comment.message_id == message.id %}
+                    <div class="comment">
+                        <h4>{{comment.first_name}} {{comment.last_name}} - {{comment.created_at.strftime('%b %d %Y')}}</h4>
+                        <p>{{comment.comment}}</p>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    </body>
+</html>

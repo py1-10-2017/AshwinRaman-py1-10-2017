@@ -1,0 +1,25 @@
+nav{
+    padding: 0 5% 0 5%;
+}
+hr {
+    margin-top: 0
+}
+nav>h1{
+    display:inline-block;
+    margin: 0;
+}
+nav>a{
+    float:right;
+}
+.success{
+    color: blue;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.message p, .comment p{
+    font-family: sans-serif;
+}
+.comment{
+    margin-left: 10%;
+}
