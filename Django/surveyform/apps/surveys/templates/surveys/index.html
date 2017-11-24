@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Survey Form</title>
+  </head>
+  <body>
+    <div class="form">
+    <h1>Dojo Survey</h1>
+    <form action='/surveys/process' method="POST">
+      {% csrf_token %}
+      <p><label for="name">Name: </label><input type="text" name="name" placeholder="Name"></p></input>
+        <select type = "text" name = "location" placeholder = "Location">
+          <option value = "Seattle">Seattle</option>
+          <option value = "San Jose">San Jose</option>
+          <option value = "DC">DC</option>
+          <option value = "Chicago">Chicago</option>
+          <option value = "Online">Online</option>
+        </select>
+      </p>
+      <p><label for = "language">Favorite Language: </label>
+        <select type = "text" name = "language" placeholder = "Language">
+          <option value = "Python">Python</option>
+          <option value = "Ruby">Ruby</otpion>
+          <option value = "JavaScript">JavaScript</option>
+        </select>
+      </p>
+      <p><label for = "comment">Comment (optional): </label>
+        <textarea type = "text" name = "comment" placeholder = "Comment"></textarea>
+      </p>
+    <input type = "submit" value = "Submit">
+    </form>
+  </div>
+  </body>
+</html>
