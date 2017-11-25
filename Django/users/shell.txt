@@ -1,0 +1,26 @@
+(djangoEnv) MacBook-Pro:users mbp$ python manage.py shell
+Python 2.7.10 (default, Feb  7 2017, 00:08:15)
+[GCC 4.2.1 Compatible Apple LLVM 8.0.0 (clang-800.0.34)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+(InteractiveConsole)
+>>> from apps.user_login.models import User
+>>> User.objects.create(first_name = "Ashwin", last_name = "Raman", email_address = "sadfasdf@gmail.com", age = 26)
+<User: User object>
+>>> User.objects.create(first_name = "Minh", last_name = "Nguyen", email_address = "sdafsdgg@gmail.com", age = 23)
+<User: User object>
+>>> User.objects.all()
+<QuerySet [<User: User object>, <User: User object>]>
+>>> User.objects.last()
+<User: User object>
+>>> User.objects.all().order_by("first_name")
+<QuerySet [<User: User object>, <User: User object>]>
+>>> User.objects.get(id=1)
+<User: User object>
+>>> user1 = User.objects.get(id=1)
+>>> user1.last_name = "Hello"
+>>> user1.save()
+>>> User.objects.get(id=2).delete()
+(1, {u'user_login.User': 1})
+>>> User.objects.all()
+<QuerySet [<User: User object>]>
+>>> 
