@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ajax Notes</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <h2>My Posts</h2>
+      <div>
+        {% for note in notes %}
+          <div><p>{{note.note}}</p></div>
+        {% endfor %}
+      </div>
+      <form action="/add_note" method="POST">
+      {% csrf_token %}
+      <div>
+        <label for="note">Add a note:</label>
+        <textarea rows="5" name="note"></textarea>
+      </div>
+      <input type="submit" value="Post It!">
+      </form>
+    </div>
+    <script>
+    $('#add_note_submit').submit(function(e){
+        e.preventDefault()
+        $.ajax({
+              url: '/add_note',
+              method: 'post',
+              data: $(this).serialize(),
+              success: function(serverResponse) {
+                $('#notes').append('<div class="note">' + serverResponse + '</div>')
+              }
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>User Pagination</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="filter">
+        <form action="/show">
+        {% csrf_token %}
+          <div class="row">
+            <div class="col-3">
+              <label for="name">Name</label>
+              <input type="text" id="name" placeholder="">
+            </div>
+            <div>
+            </div>
+           <div>
+             <label>From: </label>
+             <input type="date" class="form-control" id="date_start" name="date_start" placeholder="">
+           </div>
+           <div class="col-3">
+             <label>To: </label>
+             <input type="date" class="form-control" id="date_end" name="date_end" placeholder="" >
+           </div>
+          </div>
+        </form>
+        <div id="pagination">
+          {% for i in pagination %}
+            <form class="paginate" action="/show" method="POST">
+            {% csrf_token %}
+              <input class="pagination" type="submit" value="{{i}}">
+              <input type="hidden" name="page_number" value="{{i}}">
+            </form>
+            |
+          {% endfor %}
+        </div>
+      </div>
+      <div id="user_list">
+      <table class="table-striped">
+          <tr>
+            <th>User ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Registration Date</th>
+            <th>Email</th>
+          </tr>
+          {% for user in users %}
+            <tr>
+              <td>{{user.id}}</td>
+              <td>{{user.first_name}}</td>
+              <td>{{user.last_name}}</td>
+              <td>{{user.created_at}}</td>
+              <td>{{user.email}}</td>
+            </tr>
+          {% endfor %}
+      </table>
+
+    </div>
+    <script>
+    $('#name').keyup(function(){
+        console.log("In filter by name keyup handler")
+        $.ajax({
+              url: '/show',
+              method: 'get',
+              data: {"name": $(this).val()},
+              success: function(serverResponse) {
+                data = JSON.parse(serverResponse)
+                console.log("Successful server response: "+data['list'])
+                $('#user_list').html(data['list'])
+                num_page = data['num_page']
+                pagination_str = "";
+                for (i=1; i<=num_page; i++){
+                  pagination_str += "<form class='paginate' action='/show' method='POST'>{% csrf_token %}<input class='pagination' type='submit' value='"+i+"'><input type='hidden' name='page_number' value='"+i+"'></form>|"
+                }
+                $('#pagination').html(pagination_str)
+              }
+        });
+      });
+      $('#date_start').focusout(function(){
+          console.log("In date start filter focusout handler")
+          console.log("value of date start: "+$(this).val())
+          $.ajax({
+                url: '/show',
+                method: 'get',
+                data: {"start": $(this).val()},
+                success: function(serverResponse) {
+                  data = JSON.parse(serverResponse)
+                  console.log("Successful server response: "+data['list'])
+                  $('#user_list').html(data['list'])
+                  num_page = data['num_page']
+                  pagination_str = "";
+                  for (i=1; i<=num_page; i++){
+                    pagination_str += "<form class='paginate' action='/show' method='POST'>{% csrf_token %}<input class='pagination' type='submit' value='"+i+"'><input type='hidden' name='page_number' value='"+i+"'></form>|"
+                  }
+                  $('#pagination').html(pagination_str)
+                }
+          });
+      });
+      $('#date_end').focusout(function(){
+          console.log("In date start filter focusout handler")
+          $.ajax({
+                url: '/show',
+                method: 'get',
+                data: {"end": $(this).val()},
+                success: function(serverResponse) {
+                  data = JSON.parse(serverResponse)
+                  console.log("Successful server response: "+data['list'])
+                  $('#user_list').html(data['list'])
+                  num_page = data['num_page']
+                  pagination_str = "";
+                  for (i=1; i<=num_page; i++){
+                    pagination_str += "<form class='paginate' action='/show' method='POST'>{% csrf_token %}<input class='pagination' type='submit' value='"+i+"'><input type='hidden' name='page_number' value='"+i+"'></form>|"
+                  }
+                  $('#pagination').html(pagination_str)
+                }
+          });
+      });
+      $(document).ready(function(){
+          $(document).on('submit', '.paginate', function(e) {
+                console.log("In paginate handler")
+                e.preventDefault()
+                $.ajax({
+                      url: '/show',
+                      method: 'post',
+                      data: $(this).serialize(),
+                      success: function(serverResponse) {  
+                        data = JSON.parse(serverResponse)
+                        console.log("Successful server response: "+data['list'])
+                        $('#user_list').html(data['list'])
+                      }
+                });
+            });
+        });
+    </script>
+  </body>
+</html>

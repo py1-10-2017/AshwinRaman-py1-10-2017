@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Ajax Notes</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <h2>Notes</h2>
+      <div>
+        {% for note in notes %}
+          <div>
+          <form action="/delete" method="POST">
+          {% csrf_token %}
+          {{note.title}}
+          <input type="hidden" name="note_id" value={{note.id}}>
+          <input class="delete_link" type="submit" value="Delete">
+          <textarea rows="5" name="description" placeholder="{{note.description}}"></textarea>
+          </form>
+          </div>
+        {% endfor %}
+      </div>
+      <div id="add_note">
+        <form action="/add" method="POST" id="add_note_submit">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="note">New title:</label>
+          <input type="text" name="title" placeholder="Insert note title here">
+        </div>
+        <input type="submit" value="Add Note">
+        </form>
+      </div>
+    </div>
+    <script>
+    $('#add_note_submit').submit(function(e){
+        console.log("In add note form submit handler")
+        e.preventDefault()
+        $.ajax({
+              url: '/add',
+              method: 'post',
+              data: $(this).serialize(),
+              success: function(serverResponse) {
+                console.log("Successful server response: "+serverResponse)
+                append_html_str = "<div class='note'><form class='delete_note' action='/delete' method='POST'>{% csrf_token %}"+$('#new_title').val()+"<input type='hidden' name='note_id' value="+serverResponse+'><input class="delete_link" type="submit" value="Delete"><textarea class="form-control col-12 col-form-label" rows="5" name="description" placeholder="Enter a description here..."></textarea></form></div>'
+                $('#notes').append(append_html_str)
+              }
+          });
+      });
+      $(document).ready(function(){
+
+          $(document).on('focusout','textarea',function() {
+            console.log("In textarea focusout handler")
+            $.ajax({
+                  url: '/update_description',
+                  method: 'post',
+                  data: $(this).parent().serialize(),
+                  success: function(serverResponse) {
+                    console.log("Successful server response: "+serverResponse)
+                  }
+              });
+            });
+          $(document).on('submit', '.delete_note', function(e) {
+                console.log("In delete note form submit handler")
+                e.preventDefault()
+                console.log($(this).html())
+                $.ajax({
+                      url: '/delete',
+                      method: 'post',
+                      data: $(this).serialize(),
+                      success: function(serverResponse) {
+                        console.log("Successful server response: "+serverResponse)
+                        
+                      }
+                });
+                $(this).parent().remove()
+            });
+        });
+    </script>
+  </body>
+</html>
